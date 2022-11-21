@@ -8,9 +8,10 @@
  */
 
 define('GENERATETHUMBNAILS_PLUGIN_DIR', dirname(__FILE__));
-require (GENERATETHUMBNAILS_PLUGIN_DIR.'/autoload.php');
+//require (GENERATETHUMBNAILS_PLUGIN_DIR.'/autoload.php');
 
 class GenerateThumbnailsPlugin extends Omeka_Plugin_AbstractPlugin {
+
     protected $_hooks = array(
         'install',
         'uninstall',
@@ -31,15 +32,15 @@ class GenerateThumbnailsPlugin extends Omeka_Plugin_AbstractPlugin {
     }
 
     public function hookDefineRoutes($args) {
-        $config = new Zend_Config_Ini(ELASTICSEARCH_PLUGIN_DIR.'/routes.ini');
+        $config = new Zend_Config_Ini(GENERATETHUMBNAILS_PLUGIN_DIR.'/routes.ini');
         $args['router']->addConfig($config);
     }
 
     public function filterAdminNavigationMain($nav) {
-        if(Elasticsearch_Utils::hasAdminPermission()) {
+        if(GenerateThumbnails_Utils::hasAdminPermission()) {
             $nav[] = array(
-                'label' => __('Elasticsearch'),
-                'uri' => url('elasticsearch/admin/server')
+                'label' => __('Generate Thumbnails'),
+                'uri' => url('generatethumbnails/admin')
             );
         }
         return $nav;
@@ -53,22 +54,12 @@ class GenerateThumbnailsPlugin extends Omeka_Plugin_AbstractPlugin {
     }
 
     protected function _setOptions() {
-        set_option('elasticsearch_index', $docIndex);
-        set_option('elasticsearch_aws', $service == 'aws' ? 1 : 0);
-        set_option('elasticsearch_host', $host['host']);
-        set_option('elasticsearch_port', $host['port']);
-        set_option('elasticsearch_scheme', $host['scheme']);
-        set_option('elasticsearch_user', $host['user']);
-        set_option('elasticsearch_pass', $host['pass']);
+        set_option('elasticsearch_user', 'user');
+        set_option('elasticsearch_pass', 'pass');
         set_option('elasticsearch_show_timestamps', true);
     }
 
     protected function _clearOptions() {
-        delete_option('elasticsearch_index');
-        delete_option('elasticsearch_aws');
-        delete_option('elasticsearch_host');
-        delete_option('elasticsearch_port');
-        delete_option('elasticsearch_scheme');
         delete_option('elasticsearch_user');
         delete_option('elasticsearch_pass');
         delete_option('elasticsearch_show_timestamps');
