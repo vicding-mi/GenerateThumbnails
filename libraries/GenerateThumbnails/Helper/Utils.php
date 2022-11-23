@@ -26,6 +26,28 @@ class GenerateThumbnails_Helper_Utils {
         return date_format(date_create($iso8601date), "F j, Y");
     }
 
+    /**
+     * Returns the most recent jobs related to reindexing the site.
+     *
+     * @return array
+     */
+    public static function isJobRunning(string $classType): bool
+    {
+        $table = get_db()->getTable('Process');
+        $select = $table->getSelect();
+        $job_objects = $table->fetchObjects($select);
+
+        foreach($job_objects as $job_object) {
+            // Because job args are serialized to a string using some combination of PHP serialize() and json_encode(),
+            // just do a simple string search rather than try to deal with that.
+            if(!empty($job_object->args) && strrpos($job_object->args, '$classType') !== FALSE) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static function load(): Zend_Config_Ini
     {
         if(self::$_config) {
