@@ -1,12 +1,12 @@
 <?php
 
-class GenerateThumbnails_Form_Config extends Omeka_Form {
+class GenerateThumbnails_Helper_Config extends Omeka_Form {
     public function init() {
         parent::init();
 
         // Create only missing thumbnails
         $this->addElement('checkbox', 'generatethumbnails_missingonly', array(
-            'label'         => __('Re-create missing ones only?'),
+            'label'         => __('Re-generate missing ones only?'),
             'description'   => __('Enable this option to create thumbnails only when there is no one available. '),
             'value'         => get_option('generatethumbnails_missingonly'),
             'required'      => true,
@@ -14,7 +14,7 @@ class GenerateThumbnails_Form_Config extends Omeka_Form {
 
 
         $this->addElement('submit', 'submit', array(
-            'label' => __('Save Settings')
+            'label' => __('Re-generate')
         ));
 
         $this->addDisplayGroup(array(

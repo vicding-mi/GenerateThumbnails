@@ -10,7 +10,8 @@
 define('GENERATETHUMBNAILS_PLUGIN_DIR', dirname(__FILE__));
 require (GENERATETHUMBNAILS_PLUGIN_DIR.'/autoload.php');
 
-class GenerateThumbnailsPlugin extends Omeka_Plugin_AbstractPlugin {
+class GenerateThumbnailsPlugin extends Omeka_Plugin_AbstractPlugin
+{
 
     protected $_hooks = array(
         'install',
@@ -22,26 +23,35 @@ class GenerateThumbnailsPlugin extends Omeka_Plugin_AbstractPlugin {
         'admin_navigation_main',
     );
 
-    public function hookInstall() {
+    public function hookInstall()
+    {
         $this->_setOptions();
     }
 
-    public function hookUninstall() {
+    public function hookUninstall()
+    {
         $this->_clearOptions();
     }
 
-    public function hookDefineRoutes($args) {
-//        $config = new Zend_Config_Ini(GENERATETHUMBNAILS_PLUGIN_DIR.'/routes.ini');
-//        $args['router']->addConfig($config);
+    public function hookDefineRoutes($args)
+    {
         $router = $args['router'];
-        $mapRoute = new Zend_Controller_Router_Route('generatethumbnails/config',
-            array('controller' => 'admin',
-                'action'     => 'config'));
-        $router->addRoute('generatethumbnails/config', $mapRoute);
+
+        if (is_admin_theme()) {
+            $router->addRoute('generatethumbnails-page',
+                new Zend_Controller_Router_Route(
+                    'generatethumbnails/config',
+                    array(
+                        'module'        => 'generate-thumbnails',
+                        'controller'    => 'admin',
+                        'action'        => 'config'))
+            );
+        }
     }
 
-    public function filterAdminNavigationMain($nav) {
-        if(GenerateThumbnails_Utils::hasAdminPermission()) {
+    public function filterAdminNavigationMain($nav)
+    {
+        if (GenerateThumbnails_Helper_Utils::hasAdminPermission()) {
             $nav[] = array(
                 'label' => __('Generate Thumbnails'),
                 'uri' => url('generatethumbnails/config')
@@ -50,11 +60,13 @@ class GenerateThumbnailsPlugin extends Omeka_Plugin_AbstractPlugin {
         return $nav;
     }
 
-    protected function _setOptions() {
+    protected function _setOptions()
+    {
         set_option('generatethumbnails_missingonly', true);
     }
 
-    protected function _clearOptions() {
+    protected function _clearOptions()
+    {
         delete_option('generatethumbnails_missingonly');
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-class GenerateThumbnails_Utils {
+class GenerateThumbnails_Helper_Utils {
     protected static $_config;
 
     /**
