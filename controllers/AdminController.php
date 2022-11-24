@@ -36,11 +36,8 @@ class GenerateThumbnails_AdminController extends Omeka_Controller_AbstractAction
             }
             $this->redirect('/generatethumbnails/config');
         } else {
-            _log("this is what i got: " . GenerateThumbnails_Helper_Utils::isJobRunning("GenerateThumbnails_Job_Regenerate"));
             if (GenerateThumbnails_Helper_Utils::isJobRunning("GenerateThumbnails_Job_Regenerate")) {
                 $this->_helper->flashMessenger(__('Re-generation running in background, you do not have to run it again.'), 'success');
-            } else {
-                $this->_helper->flashMessenger(__('no job found'), 'success');
             }
             $this->view->form = $form;
         }
