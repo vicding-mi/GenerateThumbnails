@@ -28,9 +28,7 @@ class GenerateThumbnails_AdminController extends Omeka_Controller_AbstractAction
                 $job_dispatcher = Zend_Registry::get('job_dispatcher');
                 $job_dispatcher->setUser($this->getCurrentUser());
 
-                $job_dispatcher->send('GenerateThumbnails_Job_Regenerate');
-                // TODO: use the line below instead of the one above once plugin works
-                // $job_dispatcher->sendLongRunning('GenerateThumbnails_Job_Regenerate');
+                 $job_dispatcher->sendLongRunning('GenerateThumbnails_Job_Regenerate');
 
                 $this->_helper->flashMessenger(__('Re-generation requested.'), 'success');
             } catch (Exception $err) {
@@ -40,6 +38,8 @@ class GenerateThumbnails_AdminController extends Omeka_Controller_AbstractAction
         } else {
             if (GenerateThumbnails_Helper_Utils::isJobRunning("GenerateThumbnails_Job_Regenerate")) {
                 $this->_helper->flashMessenger(__('Re-generation running in background, you do not have to run it again.'), 'success');
+            } else {
+                $this->_helper->flashMessenger(__('no job found'), 'success');
             }
             $this->view->form = $form;
         }
