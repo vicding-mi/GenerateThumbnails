@@ -23,12 +23,12 @@ class GenerateThumbnails_Job_Regenerate extends Omeka_Job_AbstractJob
     /**
      * @var array Valid derivative types
      */
-    protected $_validDerivativeTypes = array('fullsize', 'thumbnail', 'square_thumbnail');
+    protected array $_validDerivativeTypes = array('fullsize', 'thumbnail', 'square_thumbnail');
 
     /**
      * @var array Derivative types to create and their image size constraints
      */
-    protected $_derivatives = array();
+    protected array $_derivatives = array();
 
     protected const _mimeTypes = array("image/jpeg", "image/gif", "audio/mpeg", "audio/x-wav", "image/x-ms-bmp",
         "video/quicktime", "application/pdf", "audio/x-aiff", "video/mp4", "image/tiff", "text/plain",
